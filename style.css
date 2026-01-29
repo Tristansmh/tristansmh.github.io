@@ -96,3 +96,69 @@ footer a {
   color: #58a6ff;
   text-decoration: none;
 }
+/* LOCK SCREEN */
+.lockscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px) brightness(1.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.lockscreen.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.lock-panel {
+  text-align: center;
+  padding: 56px 64px;
+  border-radius: 20px;
+  background: rgba(20, 20, 20, 0.65);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 50px rgba(0, 255, 213, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.lock-icon {
+  font-size: 48px;
+  color: #00ffd5;
+  margin-bottom: 16px;
+}
+
+.lock-panel h1 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.lock-status {
+  margin: 12px 0 32px;
+  opacity: 0.6;
+}
+
+.lock-panel button {
+  padding: 12px 36px;
+  border-radius: 999px;
+  background: #00ffd5;
+  color: #000;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lock-panel button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(0, 255, 213, 0.6);
+}
+
+.hint {
+  margin-top: 20px;
+  font-size: 13px;
+  opacity: 0.5;
+}
