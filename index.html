@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tristan's GitHub Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #21262d;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --card-hover: #1c2128;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background ── */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(88, 166, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88, 166, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .bg-glow {
+      position: fixed;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(88, 166, 255, 0.09) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      transition: transform 0.15s ease-out;
+    }
+
+    /* ── Layout ── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 24px 90px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 80px 0 60px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .avatar-ring {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      padding: 3px;
+      margin-bottom: 26px;
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .avatar-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(88, 166, 255, 0.35); }
+      50%       { box-shadow: 0 0 0 14px rgba(88, 166, 255, 0); }
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--accent) 0%, #a5d6ff 50%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+    }
+
+    header p.subtitle {
+      margin-top: 12px;
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .badge svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .divider span {
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Cards Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.07), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 16px 48px rgba(88, 166, 255, 0.15), 0 0 0 1px rgba(88, 166, 255, 0.2);
+      background: var(--card-hover);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    /* ── Card Icon Banner ── */
+    .card-icon-banner {
+      width: 100%;
+      height: 148px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      border-radius: 16px 16px 0 0;
+      position: relative;
+      overflow: hidden;
+      transition: filter 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .card-icon-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: brightness(1);
+      transition: filter 0.3s ease;
+    }
+
+    .card:hover .card-icon-banner {
+      filter: brightness(1.08);
+    }
+
+    /* Banner background variants per tag */
+    .banner-adventure {
+      background: radial-gradient(ellipse at 50% 110%, rgba(56, 139, 253, 0.28) 0%, #0a1525 70%);
+    }
+    .banner-clicker {
+      background: radial-gradient(ellipse at 50% 110%, rgba(248, 184, 88, 0.28) 0%, #1a1000 70%);
+    }
+    .banner-racing {
+      background: radial-gradient(ellipse at 50% 110%, rgba(255, 123, 114, 0.28) 0%, #1a0806 70%);
+    }
+    .banner-drift {
+      background: radial-gradient(ellipse at 50% 110%, rgba(255, 166, 87, 0.28) 0%, #150a00 70%);
+    }
+    .banner-battle {
+      background: radial-gradient(ellipse at 50% 110%, rgba(188, 140, 255, 0.28) 0%, #0d0a1a 70%);
+    }
+    .banner-multiplayer {
+      background: radial-gradient(ellipse at 50% 110%, rgba(63, 185, 80, 0.28) 0%, #061a0d 70%);
+    }
+
+    /* Dot grid overlay on banner */
+    .banner-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+
+    /* The main icon circle */
+    .banner-icon-wrap {
+      position: relative;
+      z-index: 2;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover .banner-icon-wrap {
+      transform: scale(1.1);
+    }
+
+    .banner-icon-wrap svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    /* Icon circle colours per tag */
+    .icon-adventure {
+      background: rgba(56, 139, 253, 0.18);
+      border: 1.5px solid rgba(56, 139, 253, 0.4);
+      box-shadow: 0 0 24px rgba(56, 139, 253, 0.25);
+    }
+    .icon-clicker {
+      background: rgba(248, 184, 88, 0.18);
+      border: 1.5px solid rgba(248, 184, 88, 0.4);
+      box-shadow: 0 0 24px rgba(248, 184, 88, 0.25);
+    }
+    .icon-racing {
+      background: rgba(255, 123, 114, 0.18);
+      border: 1.5px solid rgba(255, 123, 114, 0.4);
+      box-shadow: 0 0 24px rgba(255, 123, 114, 0.25);
+    }
+    .icon-drift {
+      background: rgba(255, 166, 87, 0.18);
+      border: 1.5px solid rgba(255, 166, 87, 0.4);
+      box-shadow: 0 0 24px rgba(255, 166, 87, 0.25);
+    }
+    .icon-battle {
+      background: rgba(188, 140, 255, 0.18);
+      border: 1.5px solid rgba(188, 140, 255, 0.4);
+      box-shadow: 0 0 24px rgba(188, 140, 255, 0.25);
+    }
+    .icon-multiplayer {
+      background: rgba(63, 185, 80, 0.18);
+      border: 1.5px solid rgba(63, 185, 80, 0.4);
+      box-shadow: 0 0 24px rgba(63, 185, 80, 0.25);
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 22px 22px 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 6px;
+      transition: color 0.2s;
+    }
+
+    .card:hover h2 {
+      color: var(--accent);
+    }
+
+    .card p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Coloured Tags ── */
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding: 3px 11px;
+      border-radius: 20px;
+      border: 1px solid transparent;
+    }
+
+    .tag-adventure {
+      color: #79c0ff;
+      background: rgba(56, 139, 253, 0.12);
+      border-color: rgba(56, 139, 253, 0.3);
+    }
+    .tag-clicker {
+      color: #f8b858;
+      background: rgba(248, 184, 88, 0.12);
+      border-color: rgba(248, 184, 88, 0.3);
+    }
+    .tag-racing {
+      color: #ff7b72;
+      background: rgba(255, 123, 114, 0.12);
+      border-color: rgba(255, 123, 114, 0.3);
+    }
+    .tag-drift {
+      color: #ffa657;
+      background: rgba(255, 166, 87, 0.12);
+      border-color: rgba(255, 166, 87, 0.3);
+    }
+    .tag-battle {
+      color: #d2a8ff;
+      background: rgba(188, 140, 255, 0.12);
+      border-color: rgba(188, 140, 255, 0.3);
+    }
+    .tag-multiplayer {
+      color: #56d364;
+      background: rgba(63, 185, 80, 0.12);
+      border-color: rgba(63, 185, 80, 0.3);
+    }
+
+    /* ── Card Arrow (SVG) ── */
+    .card-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s, transform 0.3s;
+    }
+
+    .card-arrow svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--muted);
+      transition: stroke 0.2s, transform 0.3s;
+    }
+
+    .card:hover .card-arrow {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .card:hover .card-arrow svg {
+      stroke: #fff;
+      transform: translate(2px, -2px);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding-top: 64px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.12s; }
+    .card:nth-child(3) { animation-delay: 0.19s; }
+    .card:nth-child(4) { animation-delay: 0.26s; }
+    .card:nth-child(5) { animation-delay: 0.33s; }
+    .card:nth-child(6) { animation-delay: 0.40s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      header { padding: 60px 0 40px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow" id="bgGlow"></div>
+
+  <div class="wrapper">
+
+    <!-- Header -->
+    <header>
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <img
+            src="https://avatars.githubusercontent.com/tristansmh"
+            alt="Tristan's avatar"
+            onerror="this.style.display='none'; this.parentElement.innerHTML='<svg width=\'44\' height=\'44\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'#58a6ff\' stroke-width=\'1.5\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M4 20c0-4 3.6-7 8-7s8 3 8 7\'/></svg>';"
+          />
+        </div>
+      </div>
+      <h1>Tristan's GitHub Projects</h1>
+      <p class="subtitle">A curated collection of web games &amp; experiments</p>
+      <div class="badge-row">
+        <div class="badge"><span class="dot"></span> 6 Projects</div>
+        <div class="badge">
+          <!-- Globe icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          Open in Browser
+        </div>
+        <div class="badge">
+          <!-- Gamepad icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="6"/>
+            <path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="13" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          Games
+        </div>
+      </div>
+    </header>
+
+    <!-- Section Label -->
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span>All Projects</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid">
+
+      <!-- Eaglercraft -->
+      <a class="card" href="https://tristansmh.github.io/eaglercraft/" target="_blank">
+        <div class="card-icon-banner banner-adventure">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-adventure">
+            <!-- Sword / pickaxe icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#79c0ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 2.5 L21.5 9.5 L10 21 L3 21 L3 14 Z"/>
+              <line x1="8" y1="16" x2="3" y2="21"/>
+              <line x1="14.5" y1="2.5" x2="19" y2="7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>Eaglercraft</h2>
+          <p>The Minecraft port to the web!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-adventure">Adventure</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Cookie Clicker -->
+      <a class="card" href="https://tristansmh.github.io/cookieclicker/" target="_blank">
+        <div class="card-icon-banner banner-clicker">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-clicker">
+            <!-- Cookie icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#f8b858" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="9"  cy="10" r="1.2" fill="#f8b858" stroke="none"/>
+              <circle cx="14" cy="8"  r="0.9" fill="#f8b858" stroke="none"/>
+              <circle cx="15" cy="14" r="1.2" fill="#f8b858" stroke="none"/>
+              <circle cx="9"  cy="15" r="0.9" fill="#f8b858" stroke="none"/>
+              <circle cx="12" cy="12" r="0.8" fill="#f8b858" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>Cookie Clicker</h2>
+          <p>The fun addicting clicker game!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-clicker">Clicker</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- PolyTrack -->
+      <a class="card" href="https://tristansmh.github.io/polytrack/" target="_blank">
+        <div class="card-icon-banner banner-racing">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-racing">
+            <!-- Checkered flag icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff7b72" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="2" x2="5" y2="22"/>
+              <path d="M5 2 Q9 5 13 2 Q17 -1 21 2 L21 12 Q17 9 13 12 Q9 15 5 12 Z" fill="rgba(255,123,114,0.15)" stroke="#ff7b72"/>
+              <!-- inner grid hints -->
+              <line x1="13" y1="2" x2="13" y2="12" stroke="rgba(255,123,114,0.5)" stroke-width="1"/>
+              <line x1="5" y1="7" x2="21" y2="7" stroke="rgba(255,123,114,0.5)" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>PolyTrack</h2>
+          <p>The racing game made of polygons!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-racing">Racing</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- DriftBoss -->
+      <a class="card" href="https://tristansmh.github.io/driftboss/" target="_blank">
+        <div class="card-icon-banner banner-drift">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-drift">
+            <!-- Car / steering wheel icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffa657" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="2.5"/>
+              <line x1="12" y1="3" x2="12" y2="9.5"/>
+              <line x1="3.8" y1="17" x2="9"  y2="13.5"/>
+              <line x1="20.2" y1="17" x2="15" y2="13.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>DriftBoss</h2>
+          <p>The drifting game!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-drift">Drift</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- YoHoHo.io -->
+      <a class="card" href="https://tristansmh.github.io/YoHoHo.io/" target="_blank">
+        <div class="card-icon-banner banner-battle">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-battle">
+            <!-- Skull & crossbones icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#d2a8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 C7 3 4 6.5 4 10.5 C4 13.5 5.5 16 8 17 L8 20 L16 20 L16 17 C18.5 16 20 13.5 20 10.5 C20 6.5 17 3 12 3 Z"/>
+              <circle cx="9.5" cy="11" r="1.5" fill="#d2a8ff" stroke="none"/>
+              <circle cx="14.5" cy="11" r="1.5" fill="#d2a8ff" stroke="none"/>
+              <line x1="10" y1="20" x2="10" y2="17"/>
+              <line x1="14" y1="20" x2="14" y2="17"/>
+              <line x1="12" y1="20" x2="12" y2="17"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>YoHoHo.io</h2>
+          <p>The pirate battle royale!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-battle">Battle Royale</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Online Racing Game -->
+      <a class="card" href="https://tristansmh.github.io/cars/" target="_blank">
+        <div class="card-icon-banner banner-multiplayer">
+          <div class="banner-dots"></div>
+          <div class="banner-icon-wrap icon-multiplayer">
+            <!-- Two people / multiplayer icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#56d364" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="7" r="3"/>
+              <path d="M3 20 C3 16.5 5.5 14 9 14 C12.5 14 15 16.5 15 20"/>
+              <circle cx="17" cy="7" r="2.5"/>
+              <path d="M17 14 C19.5 14 21.5 16 21.5 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h2>Online Racing Game</h2>
+          <p>Race with your friends!</p>
+          <div class="card-footer">
+            <span class="card-tag tag-multiplayer">Multiplayer</span>
+            <span class="card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>Built by <a href="https://github.com/tristansmh" target="_blank">@tristansmh</a> &mdash; Hosted on GitHub Pages</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Parallax glow on mouse move
+    const glow = document.getElementById('bgGlow');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 40;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      glow.style.transform = `translateX(calc(-50% + ${x}px)) translateY(${y}px)`;
+    });
+  </script>
+
+</body>
+</html>
