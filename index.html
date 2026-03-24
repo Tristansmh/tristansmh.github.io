@@ -282,8 +282,11 @@
     .banner-battle {
       background: radial-gradient(ellipse at 50% 110%, rgba(188, 140, 255, 0.28) 0%, #0d0a1a 70%);
     }
-    .banner-platformer {
+    .banner-multiplayer {
       background: radial-gradient(ellipse at 50% 110%, rgba(63, 185, 80, 0.28) 0%, #061a0d 70%);
+    }
+    .banner-platformer {
+      background: radial-gradient(ellipse at 50% 110%, rgba(32, 201, 151, 0.28) 0%, #031a12 70%);
     }
 
     /* Dot grid overlay on banner */
@@ -348,6 +351,11 @@
       background: rgba(63, 185, 80, 0.18);
       border: 1.5px solid rgba(63, 185, 80, 0.4);
       box-shadow: 0 0 24px rgba(63, 185, 80, 0.25);
+    }
+    .icon-platformer {
+      background: rgba(32, 201, 151, 0.18);
+      border: 1.5px solid rgba(32, 201, 151, 0.4);
+      box-shadow: 0 0 24px rgba(32, 201, 151, 0.25);
     }
 
     .card-body {
@@ -424,10 +432,15 @@
       background: rgba(188, 140, 255, 0.12);
       border-color: rgba(188, 140, 255, 0.3);
     }
-    .tag-platformer {
+    .tag-multiplayer {
       color: #56d364;
       background: rgba(63, 185, 80, 0.12);
       border-color: rgba(63, 185, 80, 0.3);
+    }
+    .tag-platformer {
+      color: #38d9a9;
+      background: rgba(32, 201, 151, 0.12);
+      border-color: rgba(32, 201, 151, 0.3);
     }
 
     /* ── Card Arrow (SVG) ── */
@@ -703,23 +716,22 @@
         </div>
       </a>
 
-      <!-- Online Racing Game -->
-      <a class="card" href="https://tristansmh.github.io/slope/" target="_blank">
+      <!-- Slope -->
+      <a class="card" href="https://tristansmh.github.io/slope" target="_blank">
         <div class="card-icon-banner banner-platformer">
           <div class="banner-dots"></div>
           <div class="banner-icon-wrap icon-platformer">
-            <!-- Two people / Platformer icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke="#56d364" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="7" r="3"/>
-              <path d="M3 20 C3 16.5 5.5 14 9 14 C12.5 14 15 16.5 15 20"/>
-              <circle cx="17" cy="7" r="2.5"/>
-              <path d="M17 14 C19.5 14 21.5 16 21.5 19"/>
+            <!-- Slope / platformer icon: a ball rolling down a slope -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="#38d9a9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" y1="20" x2="22" y2="6"/>
+              <circle cx="17" cy="9.5" r="3.2" fill="rgba(56,217,169,0.18)" stroke="#38d9a9"/>
+              <line x1="2" y1="20" x2="22" y2="20" stroke="rgba(56,217,169,0.3)" stroke-width="1"/>
             </svg>
           </div>
         </div>
         <div class="card-body">
           <h2>Slope</h2>
-          <p>The addicting platformer with sphere!</p>
+          <p>Roll down an endless neon slope!</p>
           <div class="card-footer">
             <span class="card-tag tag-platformer">Platformer</span>
             <span class="card-arrow">
