@@ -585,30 +585,19 @@
             <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
           </svg>
-       <header id="playBtn">
-  Open in Browser
-  <div class="badge">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="2" y="6" width="20" height="12" rx="6"/>
-      <path d="M6 12h4M8 10v4"/>
-      <circle cx="16" cy="11" r="1" fill="currentColor" stroke="none"/>
-      <circle cx="18" cy="13" r="1" fill="currentColor" stroke="none"/>
-    </svg>
-    Games
-  </div>
-</header>
+          Open in Browser
+        </div>
+        <div class="badge">
+          <!-- Gamepad icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="6"/>
+            <path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="13" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          Games
+        </div>
+      </div>
+    </header>
 
-<script>
-  const btn = document.getElementById("playBtn");
-  const audio = new Audio("/Sneakers.mp3");
-
-  audio.volume = 1.0; // full volume
-
-  btn.addEventListener("click", () => {
-    audio.currentTime = 0; // rewind every time
-    audio.play();
-  });
-</script>
     <!-- Section Label -->
     <div class="divider">
       <div class="divider-line"></div>
